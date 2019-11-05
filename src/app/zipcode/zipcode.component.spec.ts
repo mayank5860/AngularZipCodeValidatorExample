@@ -2,13 +2,13 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ZipCodeComponent } from './zipcode.component';
 import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ZipCodeService } from './zipcode.service';
 
 describe('ZipCodeComponent', () => {
   let component: ZipCodeComponent;
   let fixture: ComponentFixture<ZipCodeComponent>;
+  let zipCodeService:ZipCodeService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -17,6 +17,8 @@ describe('ZipCodeComponent', () => {
       providers: [ZipCodeService]
     })
     .compileComponents();
+
+    zipCodeService = TestBed.get(ZipCodeService);
   }));
 
   beforeEach(() => {
@@ -29,7 +31,15 @@ describe('ZipCodeComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('Result should be blank', () => {
+  it('Zip code Service should create', () => {
+    expect(zipCodeService).toBeTruthy();
+  });
+
+  it('Zip Code Data should be blank', () => {
+    expect(component.zipCodeData).toEqual('');
+  });
+
+  it('Result should be undefined', () => {
     expect(component.zipCodeResult).toBeUndefined();
   });
 
@@ -37,12 +47,32 @@ describe('ZipCodeComponent', () => {
     expect(component.clearForm()).toEqual(undefined);
   });
 
-  it('Zip Code Data should be blank', () => {
+  it('Zip Code Result should be blank', () => {
+    expect(component.zipCodeResult).toEqual(undefined);
+  });
+
+  it('Zip code Input as "" and expected value should be ""', () => {
+    component.zipCodeData = '';
+    component.validateZipCodes();
     expect(component.zipCodeData).toEqual('');
   });
 
-  it('Zip Code Data should be blank', () => {
-    expect(component.zipCodeData).toEqual('');
+  it('Zip code Input as "" and expected Result should be undefined', () => {
+    component.zipCodeData = '';
+    component.validateZipCodes();
+    expect(component.zipCodeResult).toEqual(undefined);
+  });
+  
+  it('Input as "[9,8]" and expected Result should be "[9,8]"', () => {
+    component.zipCodeData = '[9,8]';
+    component.validateZipCodes();
+    expect(component.zipCodeResult).toEqual('[9,8]');
+  });
+
+  it('Input as "[7,8][1,2]" and expected Result should be "[1,2][7,8]"', () => {
+    component.zipCodeData = '[7,8][1,2]';
+    component.validateZipCodes();
+    expect(component.zipCodeResult).toEqual('[1,2][7,8]');
   });
 
   it('Input as "[94133,94133] [94200,94299] [94600,94699]" and expected Result should be " [94133,94133] [94200,94299] [94600,94699]"', () => {
@@ -74,5 +104,4 @@ describe('ZipCodeComponent', () => {
     component.validateZipCodes();
     expect(component.zipCodeResult).toEqual('[1,2][7,8][9,8]');
   });
-
 });

@@ -5,7 +5,10 @@ import { isNullOrUndefined } from 'util';
 @Injectable()
 export class ZipCodeService {
 
-  //This function used to validate the zipcode values and return the result
+  /*
+  This function is responsible to parse the input zipcode array string into array of array and 
+  use that object to validate and return the string array object 
+  */
   validateZipCode(zipCodeValues: any) {
 
     if (!isNullOrUndefined(zipCodeValues) && zipCodeValues.trim() !== "") {
@@ -14,8 +17,12 @@ export class ZipCodeService {
     }
   }
 
-  //This function used to parse the zipcode 
-  parseZipcode(zipCodeValues: any) {
+  /*
+    This function used to validate the input zipcode array contains the [min, max] values. It check the array and compare
+    the "min" value of current index is greater than the next index value then use next index value and so on. 
+    Reverse case for the max value. If the array length is equal to one then return the current index values.
+  */
+  private parseZipcode(zipCodeValues: any) {
     let output = "";
     
     if (zipCodeValues.length > 1) {
@@ -65,8 +72,10 @@ export class ZipCodeService {
     return output;
   }
 
-  //Convert the string Array object into Array
-  convertStringToArray(values) {
+  /*
+    Function used to convert the string Array into Array of array to loop through
+  */
+  private convertStringToArray(values) {  
     let zipcodeArr = [];
     if (!isNullOrUndefined(values)) {
       const splitArray = values.split('[');
@@ -97,8 +106,11 @@ export class ZipCodeService {
     }
   }
 
-  //This function used to sort the array of array object
-  sortFunction(a, b) {
+  /*
+  This is the custom sort function to sort the array of array contain number
+  to sort numerically
+  */
+  private sortFunction(a, b) {
     if (!isNullOrUndefined(a) && !isNullOrUndefined(b)) {
       if (a[0] === b[0]) {
         return 0;
