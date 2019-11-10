@@ -1,16 +1,15 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { ZipCodeModule } from './zipcode/zipcode.module';
-import { ZipCodeComponent } from './zipcode/zipcode.component';
 
 const routes: Routes = [
-  { path: "", 
-   component: ZipCodeComponent
+  { path: '', 
+   loadChildren: () => import ('./zipcode/zipcode.module').then(m => m.ZipCodeModule)
 }
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule, ZipCodeModule]
+  exports: [RouterModule],
+  providers: []
 })
 export class AppRoutingModule { }
